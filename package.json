@@ -1,0 +1,11 @@
+{
+  "name": "shopping-cart",
+  "version": "1.0.0",
+  "description": "A simple shopping cart for adding and removing units of selected items and applying discounts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrea Ercolino <aercolino@yahoo.com>",
+  "license": "UNLICENSED"
+}
