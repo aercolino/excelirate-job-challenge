@@ -9,4 +9,7 @@
   .cart-table td {
     @apply py-4;
   }
+  .cart-table p {
+    @apply text-gray-400;
+  }
 }
