@@ -12,4 +12,7 @@
   .cart-table p {
     @apply text-gray-400;
   }
+  .template {
+    @apply hidden;
+  }
 }
