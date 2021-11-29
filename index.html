@@ -85,7 +85,7 @@
           const units = parseInt(getComputed(row$, 'units'), 10);
           return units > 0;
         });
-        const result = selected$.map(function () {
+        const list = selected$.map(function () {
           const row$ = $(this);
           const units = parseInt(getComputed(row$, 'units'), 10);
           const price = Math.floor(parseFloat(getData(row$, 'price')) * 100);
@@ -97,6 +97,10 @@
             total,
           }
         }).get();
+        const result = list.reduce((acc, val) => {
+          acc[val.code] = val;
+          return acc;
+        }, {});
         return result;
       }
 
