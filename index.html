@@ -28,10 +28,10 @@
         products.forEach((product) => {
           const newRow$ = template$.clone().removeClass('template');
           newRow$.find('.data').each(function () {
-            const data$ = $(this);
-            if (data$.is('.name')) data$.text(product.name);
-            if (data$.is('.code')) data$.text(product.code);
-            if (data$.is('.price')) data$.text(product.price / 100);
+            const element$ = $(this);
+            if (element$.is('.name')) element$.text(product.name);
+            if (element$.is('.code')) element$.text(product.code);
+            if (element$.is('.price')) element$.text(product.price / 100);
           });
           newRow$.appendTo('.cart-table');
         });
