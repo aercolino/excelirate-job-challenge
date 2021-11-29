@@ -37,6 +37,20 @@
         });
       }
 
+      function createRowsFromDiscounts(discounts) {
+        $('.discounts-row:not(.template)').remove();
+        const template$ = $('.discounts-row.template');
+        discounts.forEach((discount) => {
+          const newRow$ = template$.clone().removeClass('template');
+          newRow$.find('.computed').each(function () {
+            const element$ = $(this);
+            if (element$.is('.name')) element$.text(discount.name);
+            if (element$.is('.value')) element$.text(discount.value / 100);
+          });
+          newRow$.appendTo('.discounts-table');
+        });
+      }
+
       function getData(context$, key) {
         return context$.find(`.data.${key}`).text();
       }
@@ -117,6 +131,14 @@
           };
         })).filter(x => !!x);
         console.log(applicable);
+
+        if (applicable.length === 0) {
+          $('.discounts').hide();
+        }
+        else {
+          createRowsFromDiscounts(applicable);
+          $('.discounts').show();
+        }
       }
 
       function updateGrandTotal() {
@@ -247,11 +269,11 @@
             <div class="mb-2">
               <h2 class="uppercase text-gray-400">Discounts</h2>
             </div>
-            <table class="table-fixed w-full">
+            <table class="discounts-table table-fixed w-full">
               <tbody>
-                <tr class="discount-row template">
-                  <td class="text-gray-600"><span class="computed discountName"></span></td>
-                  <td class="text-right font-bold"><span class="computed discountValue">0</span> €</td>
+                <tr class="discounts-row template">
+                  <td class="text-gray-600"><span class="computed name"></span></td>
+                  <td class="text-right font-bold"><span class="computed value">0</span> €</td>
                 </tr>
               </tbody>
             </table>
