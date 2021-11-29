@@ -121,7 +121,6 @@
 
       function applyDiscounts() {
         const cart = makeCart();
-        console.log(cart);
 
         const applicable = discounts.map((discount => {
           const value = discount.value(cart);
@@ -131,7 +130,6 @@
             value,
           };
         })).filter(x => !!x);
-        console.log(applicable);
 
         if (applicable.length === 0) {
           $('.discounts').hide();
