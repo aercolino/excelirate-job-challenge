@@ -37,16 +37,16 @@
         });
       }
 
-      function getData(row$, key) {
-        return row$.find(`.data.${key}`).text();
+      function getData(context$, key) {
+        return context$.find(`.data.${key}`).text();
       }
 
-      function getComputed(row$, key) {
-        return row$.find(`.computed.${key}`).text();
+      function getComputed(context$, key) {
+        return context$.find(`.computed.${key}`).text();
       }
 
-      function setComputed(row$, key, value) {
-        row$.find(`.computed.${key}`).text(value);
+      function setComputed(context$, key, value) {
+        context$.find(`.computed.${key}`).text(value);
       }
 
       function updateRow(row$, units) {
