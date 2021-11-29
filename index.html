@@ -144,8 +144,12 @@
 
       function updateGrandTotal() {
         const summary$ = $('.summary');
-        const grandTotal = getComputed(summary$, 'itemsTotal');
-        setComputed(summary$, 'grandTotal', grandTotal);
+        const itemsTotal = getComputed(summary$, 'itemsTotal');
+        const discounts = $('.value', $('.discounts-row:not(.template)')).map(function() {
+          return parseFloat($(this).text());
+        }).get();
+        const discountsTotal = sum(discounts);
+        setComputed(summary$, 'grandTotal', itemsTotal - discountsTotal);
       }
 
       function updateSummary() {
