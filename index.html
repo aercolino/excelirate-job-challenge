@@ -49,6 +49,10 @@
         context$.find(`.computed.${key}`).text(value);
       }
 
+      function sum(array) {
+        return array.reduce((acc, val) => acc + val, 0);
+      }
+
       function updateRow(row$, units) {
         setComputed(row$, 'units', units);
         const price = parseFloat(getData(row$, 'price'));
@@ -57,8 +61,34 @@
         updateSummary();
       }
 
-      function updateSummary() {
+      function updateItems() {
+        const units = $('.units', $('.cart-row:not(.template)')).map(function() {
+          return parseInt($(this).text(), 10);
+        }).get();
+        const items = sum(units);
+        const summary$ = $('.summary');
+        setComputed(summary$, 'items', items);
+      }
 
+      function updateItemsTotal() {
+        const totals = $('.total', $('.cart-row:not(.template)')).map(function() {
+          return parseFloat($(this).text());
+        }).get();
+        const itemsTotal = sum(totals);
+        const summary$ = $('.summary');
+        setComputed(summary$, 'itemsTotal', itemsTotal);
+      }
+
+      function updateGrandTotal() {
+        const summary$ = $('.summary');
+        const grandTotal = getComputed(summary$, 'itemsTotal');
+        setComputed(summary$, 'grandTotal', grandTotal);
+      }
+
+      function updateSummary() {
+        updateItems();
+        updateItemsTotal();
+        updateGrandTotal();
       }
 
       function attachHandlerForDecrementingUnits() {
@@ -145,7 +175,7 @@
           </table>
         </div>
       </div>
-      <div class="p-4 bg-gray-200 sm:w-2/6 divide-y-2 divide-gray-300">
+      <div class="p-4 bg-gray-200 sm:w-2/6 divide-y-2 divide-gray-300 summary">
         <div class="mb-2">
           <h2 class="text-xl font-semibold">Order Summary</h2>
         </div>
@@ -154,8 +184,8 @@
             <table class="table-fixed w-full">
               <tbody>
                 <tr>
-                  <td class="text-gray-600">0 Items</td>
-                  <td class="text-right font-bold">0 €</td>
+                  <td class="text-gray-600"><span class="computed items">0</span> Items</td>
+                  <td class="text-right font-bold"><span class="computed itemsTotal">0</span> €</td>
                 </tr>
               </tbody>
             </table>
@@ -166,7 +196,7 @@
               <tbody>
                 <tr>
                   <td class="uppercase text-gray-600">Total Cost</td>
-                  <td class="text-xl text-right font-bold">0 €</td>
+                  <td class="text-xl text-right font-bold"><span class="computed grandTotal">0</span> €</td>
                 </tr>
               </tbody>
             </table>
