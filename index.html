@@ -24,6 +24,7 @@
       'use strict';
 
       function createRowsFromProducts(products) {
+        $('.cart-row:not(.template)').remove();
         const template$ = $('.cart-row.template');
         products.forEach((product) => {
           const newRow$ = template$.clone().removeClass('template');
