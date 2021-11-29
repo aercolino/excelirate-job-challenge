@@ -115,8 +115,7 @@
             ...discount,
             value,
           };
-        }));
-
+        })).filter(x => !!x);
         console.log(applicable);
       }
 
