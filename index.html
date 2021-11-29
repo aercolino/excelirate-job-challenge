@@ -79,6 +79,32 @@
         setComputed(summary$, 'itemsTotal', itemsTotal);
       }
 
+      function makeCart() {
+        const selected$ = $('.cart-row:not(.template').filter(function() {
+          const row$ = $(this);
+          const units = parseInt(getComputed(row$, 'units'), 10);
+          return units > 0;
+        });
+        const result = selected$.map(function () {
+          const row$ = $(this);
+          const units = parseInt(getComputed(row$, 'units'), 10);
+          const price = Math.floor(parseFloat(getData(row$, 'price')) * 100);
+          const total = Math.floor(parseFloat(getComputed(row$, 'total')) * 100);
+          return {
+            code: getData(row$, 'code'),
+            units,
+            price,
+            total,
+          }
+        }).get();
+        return result;
+      }
+
+      function applyDiscounts() {
+        const cart = makeCart();
+        console.log(cart);
+      }
+
       function updateGrandTotal() {
         const summary$ = $('.summary');
         const grandTotal = getComputed(summary$, 'itemsTotal');
@@ -88,6 +114,7 @@
       function updateSummary() {
         updateItems();
         updateItemsTotal();
+        applyDiscounts();
         updateGrandTotal();
       }
 
@@ -131,6 +158,18 @@
           price: 750,
         },
       ];
+
+      const discounts = [
+        {
+          name: '2x1 Goku POP offer',
+          value: (cart) => Math.floor(cart['GOKU'].units / 2) * cart['GOKU'].price,
+        },
+        {
+          name: 'x3 Naruto POP offer',
+          value: (cart) => cart['NARU'].units >= 3 ? cart['NARU'].units * 100 : 0,
+        }
+      ];
+
       createRowsFromProducts(products);
       attachHandlerForDecrementingUnits();
       attachHandlerForIncrementingUnits();
@@ -190,7 +229,19 @@
               </tbody>
             </table>
           </div>
-          <div></div>
+          <div class="py-4 discounts" style="display: none;">
+            <div class="mb-2">
+              <h2 class="uppercase text-gray-400">Discounts</h2>
+            </div>
+            <table class="table-fixed w-full">
+              <tbody>
+                <tr class="discount-row template">
+                  <td class="text-gray-600"><span class="computed discountName"></span></td>
+                  <td class="text-right font-bold"><span class="computed discountValue">0</span> €</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="py-4">
             <table class="table-fixed w-full">
               <tbody>
