@@ -166,11 +166,11 @@
       const discounts = [
         {
           name: '2x1 Goku POP offer',
-          value: (cart) => Math.floor(cart['GOKU'].units / 2) * cart['GOKU'].price,
+          value: (cart) => cart['GOKU'] ? Math.floor(cart['GOKU'].units / 2) * cart['GOKU'].price : 0,
         },
         {
           name: 'x3 Naruto POP offer',
-          value: (cart) => cart['NARU'].units >= 3 ? cart['NARU'].units * 100 : 0,
+          value: (cart) => cart['NARU'] ? cart['NARU'].units >= 3 ? cart['NARU'].units * 100 : 0 : 0,
         }
       ];
 
