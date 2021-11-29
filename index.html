@@ -37,6 +37,51 @@
         });
       }
 
+      function getData(row$, key) {
+        return row$.find(`.data.${key}`).text();
+      }
+
+      function getComputed(row$, key) {
+        return row$.find(`.computed.${key}`).text();
+      }
+
+      function setComputed(row$, key, value) {
+        row$.find(`.computed.${key}`).text(value);
+      }
+
+      function updateRow(row$, units) {
+        setComputed(row$, 'units', units);
+        const price = parseFloat(getData(row$, 'price'));
+        const total = units * price;
+        setComputed(row$, 'total', total);
+        updateSummary();
+      }
+
+      function updateSummary() {
+
+      }
+
+      function attachHandlerForDecrementingUnits() {
+        const minuses$ = $('.minus');
+        minuses$.on('click', function () {
+          const button$ = $(this);
+          const row$ = button$.parents('.cart-row');
+          const units = parseInt(getComputed(row$, 'units'), 10);
+          if (units === 0) return;
+          updateRow(row$, units - 1);
+        });
+      }
+
+      function attachHandlerForIncrementingUnits() {
+        const pluses$ = $('.plus');
+        pluses$.on('click', function () {
+          const button$ = $(this);
+          const row$ = button$.parents('.cart-row');
+          const units = parseInt(getComputed(row$, 'units'), 10);
+          updateRow(row$, units + 1);
+        });
+      }
+
       console.log(`Using jQuery ${$.fn.jquery}`);
 
       const products = [
@@ -57,6 +102,8 @@
         },
       ];
       createRowsFromProducts(products);
+      attachHandlerForDecrementingUnits();
+      attachHandlerForIncrementingUnits();
     });
   </script>
 </head>
@@ -86,9 +133,9 @@
                 </td>
                 <td class="text-center">
                   <div class="flex flex-row justify-center">
-                    <div class="mr-1 py-1"><button class="text-purple-600">-</button></div>
+                    <div class="mr-1 py-1"><button class="text-purple-600 minus">-</button></div>
                     <div class="w-8 py-1 border-2 rounded"><span class="computed units">0</span></div>
-                    <div class="ml-1 py-1"><button class="text-purple-600">+</button></div>
+                    <div class="ml-1 py-1"><button class="text-purple-600 plus">+</button></div>
                   </div>
                 </td>
                 <td class="text-center"><span class="data price"></span> €</td>
