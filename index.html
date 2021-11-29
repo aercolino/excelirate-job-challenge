@@ -107,6 +107,17 @@
       function applyDiscounts() {
         const cart = makeCart();
         console.log(cart);
+
+        const applicable = discounts.map((discount => {
+          const value = discount.value(cart);
+          if (value === 0) return null;
+          return {
+            ...discount,
+            value,
+          };
+        }));
+
+        console.log(applicable);
       }
 
       function updateGrandTotal() {
