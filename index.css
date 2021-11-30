@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 @layer base {
-  .cart-table th {
+  .CART-TABLE th {
     @apply py-2 uppercase font-light text-xs text-gray-400;
   }
-  .cart-table td {
+  .CART-TABLE td {
     @apply py-4;
   }
-  .cart-table p {
+  .CART-TABLE p {
     @apply text-gray-400;
   }
-  .template {
+  .TEMPLATE {
     @apply hidden;
   }
 }

@@ -4,44 +4,44 @@ jQuery(function ($) {
   'use strict';
 
   function createRowsFromProducts(products) {
-    $('.cart-row:not(.template)').remove();
-    const template$ = $('.cart-row.template');
+    $('.CART-ROW:not(.TEMPLATE)').remove();
+    const template$ = $('.CART-ROW.TEMPLATE');
     products.forEach((product) => {
-      const newRow$ = template$.clone().removeClass('template');
-      newRow$.find('.data').each(function () {
+      const newRow$ = template$.clone().removeClass('TEMPLATE');
+      newRow$.find('.DATA').each(function () {
         const element$ = $(this);
-        if (element$.is('.name')) element$.text(product.name);
-        if (element$.is('.code')) element$.text(product.code);
-        if (element$.is('.price')) element$.text(product.price / 100);
+        if (element$.is('.NAME')) element$.text(product.name);
+        if (element$.is('.CODE')) element$.text(product.code);
+        if (element$.is('.PRICE')) element$.text(product.price / 100);
       });
-      newRow$.appendTo('.cart-table');
+      newRow$.appendTo('.CART-TABLE');
     });
   }
 
   function createRowsFromDiscounts(discounts) {
-    $('.discounts-row:not(.template)').remove();
-    const template$ = $('.discounts-row.template');
+    $('.DISCOUNTS-ROW:not(.TEMPLATE)').remove();
+    const template$ = $('.DISCOUNTS-ROW.TEMPLATE');
     discounts.forEach((discount) => {
-      const newRow$ = template$.clone().removeClass('template');
-      newRow$.find('.computed').each(function () {
+      const newRow$ = template$.clone().removeClass('TEMPLATE');
+      newRow$.find('.COMPUTED').each(function () {
         const element$ = $(this);
-        if (element$.is('.name')) element$.text(discount.name);
-        if (element$.is('.value')) element$.text(discount.value / 100);
+        if (element$.is('.NAME')) element$.text(discount.name);
+        if (element$.is('.VALUE')) element$.text(discount.value / 100);
       });
-      newRow$.appendTo('.discounts-table');
+      newRow$.appendTo('.DISCOUNTS-TABLE');
     });
   }
 
   function getData(context$, key) {
-    return context$.find(`.data.${key}`).text();
+    return context$.find(`.DATA.${key}`).text();
   }
 
   function getComputed(context$, key) {
-    return context$.find(`.computed.${key}`).text();
+    return context$.find(`.COMPUTED.${key}`).text();
   }
 
   function setComputed(context$, key, value) {
-    context$.find(`.computed.${key}`).text(value);
+    context$.find(`.COMPUTED.${key}`).text(value);
   }
 
   function sum(array) {
@@ -49,44 +49,44 @@ jQuery(function ($) {
   }
 
   function updateRow(row$, units) {
-    setComputed(row$, 'units', units);
-    const price = parseFloat(getData(row$, 'price'));
+    setComputed(row$, 'UNITS', units);
+    const price = parseFloat(getData(row$, 'PRICE'));
     const total = units * price;
-    setComputed(row$, 'total', total);
+    setComputed(row$, 'TOTAL', total);
     updateSummary();
   }
 
   function updateItems() {
-    const units = $('.units', $('.cart-row:not(.template)')).map(function() {
+    const units = $('.UNITS', $('.CART-ROW:not(.TEMPLATE)')).map(function() {
       return parseInt($(this).text(), 10);
     }).get();
     const items = sum(units);
-    const summary$ = $('.summary');
-    setComputed(summary$, 'items', items);
+    const summary$ = $('.SUMMARY');
+    setComputed(summary$, 'ITEMS', items);
   }
 
   function updateItemsTotal() {
-    const totals = $('.total', $('.cart-row:not(.template)')).map(function() {
+    const totals = $('.TOTAL', $('.CART-ROW:not(.TEMPLATE)')).map(function() {
       return parseFloat($(this).text());
     }).get();
     const itemsTotal = sum(totals);
-    const summary$ = $('.summary');
-    setComputed(summary$, 'itemsTotal', itemsTotal);
+    const summary$ = $('.SUMMARY');
+    setComputed(summary$, 'ITEMS-TOTAL', itemsTotal);
   }
 
   function makeCart() {
-    const selected$ = $('.cart-row:not(.template').filter(function() {
+    const selected$ = $('.CART-ROW:not(.TEMPLATE').filter(function() {
       const row$ = $(this);
-      const units = parseInt(getComputed(row$, 'units'), 10);
+      const units = parseInt(getComputed(row$, 'UNITS'), 10);
       return units > 0;
     });
     const list = selected$.map(function () {
       const row$ = $(this);
-      const units = parseInt(getComputed(row$, 'units'), 10);
-      const price = Math.floor(parseFloat(getData(row$, 'price')) * 100);
-      const total = Math.floor(parseFloat(getComputed(row$, 'total')) * 100);
+      const units = parseInt(getComputed(row$, 'UNITS'), 10);
+      const price = Math.floor(parseFloat(getData(row$, 'PRICE')) * 100);
+      const total = Math.floor(parseFloat(getComputed(row$, 'TOTAL')) * 100);
       return {
-        code: getData(row$, 'code'),
+        code: getData(row$, 'CODE'),
         units,
         price,
         total,
@@ -112,22 +112,22 @@ jQuery(function ($) {
     })).filter(x => !!x);
 
     if (applicable.length === 0) {
-      $('.discounts').hide();
+      $('.DISCOUNTS').hide();
     }
     else {
       createRowsFromDiscounts(applicable);
-      $('.discounts').show();
+      $('.DISCOUNTS').show();
     }
   }
 
   function updateGrandTotal() {
-    const summary$ = $('.summary');
-    const itemsTotal = getComputed(summary$, 'itemsTotal');
-    const discounts = $('.value', $('.discounts-row:not(.template)')).map(function() {
+    const summary$ = $('.SUMMARY');
+    const itemsTotal = getComputed(summary$, 'ITEMS-TOTAL');
+    const discounts = $('.VALUE', $('.DISCOUNTS-ROW:not(.TEMPLATE)')).map(function() {
       return parseFloat($(this).text());
     }).get();
     const discountsTotal = sum(discounts);
-    setComputed(summary$, 'grandTotal', itemsTotal - discountsTotal);
+    setComputed(summary$, 'GRAND-TOTAL', itemsTotal - discountsTotal);
   }
 
   function updateSummary() {
@@ -138,22 +138,22 @@ jQuery(function ($) {
   }
 
   function attachHandlerForDecrementingUnits() {
-    const minuses$ = $('.minus');
+    const minuses$ = $('.MINUS');
     minuses$.on('click', function () {
       const button$ = $(this);
-      const row$ = button$.parents('.cart-row');
-      const units = parseInt(getComputed(row$, 'units'), 10);
+      const row$ = button$.parents('.CART-ROW');
+      const units = parseInt(getComputed(row$, 'UNITS'), 10);
       if (units === 0) return;
       updateRow(row$, units - 1);
     });
   }
 
   function attachHandlerForIncrementingUnits() {
-    const pluses$ = $('.plus');
+    const pluses$ = $('.PLUS');
     pluses$.on('click', function () {
       const button$ = $(this);
-      const row$ = button$.parents('.cart-row');
-      const units = parseInt(getComputed(row$, 'units'), 10);
+      const row$ = button$.parents('.CART-ROW');
+      const units = parseInt(getComputed(row$, 'UNITS'), 10);
       updateRow(row$, units + 1);
     });
   }
